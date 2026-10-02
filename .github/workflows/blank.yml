@@ -1,0 +1,29 @@
+nome: PC criado pelo @alves7.pcm
+
+sobre:
+  despacho de fluxo de trabalho:
+    entradas:
+      número_da_instância:
+        Descrição: 'Número da instância (1-10)'
+        obrigatório: verdadeiro
+        padrão: '1'
+        tipo: string
+
+empregos:
+  implantar-rdp:
+    executa em: windows-latest
+    tempo limite em minutos: 360
+    
+    passos:
+    - nome: Repositório de Checkout
+      utiliza: ações/checkout@v4
+      
+    - nome: Informações do sistema
+      executar: |
+        Write-Host "=== IMPLANTAÇÃO ENIGMANO RDP ===" -ForegroundColor Verde
+        Write-Host "Número da instância: ${{ github.event.inputs.instance_number }}" -ForegroundColor Yellow
+        Write-Host "Executor: $env:RUNNER_NAME" -ForegroundColor Yellow
+        Write-Host "Fluxo de trabalho: $env:GITHUB_WORKFLOW" -ForegroundColor Yellow
+        
+        Write-Host "`n=== ESPECIFICAÇÕES DO SISTEMA ===" -ForegroundColor Cyan
+        Get-ComputerInfo | Select-Object WindowsProductName, WindowsVersion, TotalPhysicalMemor
